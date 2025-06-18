@@ -10,14 +10,23 @@ const AlgorithmDropDown = ({
 }) => {
   const width = 175;
 
-  const items = algorithms.map((algorithm, idx) => ({
-    key: `${idx}`,
+  const items = algorithms.map((algorithm) => ({
+    key: algorithm,
     label: (
-      <div onClick={() => onAlgorithmChange(algorithm)}>
+      <div
+        onClick={() => onAlgorithmChange(algorithm)}
+        style={{
+          fontWeight: currentAlgorithm === algorithm ? 'bold' : 'normal',
+          padding: '4px 8px',
+          borderRadius: '4px',
+          backgroundColor: currentAlgorithm === algorithm ? '#e6f7ff' : 'transparent',
+        }}
+      >
         {algorithm}
       </div>
     ),
   }));
+  
 
   const { token } = useToken();
 

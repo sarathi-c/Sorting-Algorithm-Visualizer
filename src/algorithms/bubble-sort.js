@@ -6,27 +6,30 @@ const bubbleSort = async ({
   setColorsArray,
   visualizationSpeed,
 }) => {
-  let len = array.length;
+  const len = array.length;
 
   for (let i = 0; i < len - 1; i++) {
     for (let j = 0; j < len - 1 - i; j++) {
       let newColorsArray = new Array(len).fill(0);
-      newColorsArray[len - 1 - i] = 3;
+
       newColorsArray[j] = 1;
       newColorsArray[j + 1] = 2;
+
+      for (let k = len - i; k < len; k++) {
+        newColorsArray[k] = 3;
+      }
+
       setColorsArray(newColorsArray);
       await asyncSetTimeout({ timeout: visualizationSpeed });
 
       if (array[j + 1] < array[j]) {
-        let temp = array[j + 1];
-        array[j + 1] = array[j];
-        array[j] = temp;
-
-        // Use the spread operator to create a new array reference
+        [array[j], array[j + 1]] = [array[j + 1], array[j]];
         setArray([...array]);
       }
     }
   }
+
+  setColorsArray(new Array(len).fill(3));
 };
 
 export default bubbleSort;

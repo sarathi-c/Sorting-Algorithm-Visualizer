@@ -5,13 +5,13 @@ const SortingBar = ({ colorCode, style }) => {
 
   switch (colorCode) {
     case 1:
-      color = '#1fd655';
+      color = 'yellow';
       break;
     case 2:
       color = 'red';
       break;
     case 3:
-      color = 'yellow';
+      color = '#1fd655';
       break;
     default:
       break;

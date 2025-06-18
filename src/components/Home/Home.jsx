@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import bubbleSort from '../../algorithms/bubble-sort';
+import selectionSort from '../../algorithms/selection-sort';
+import insertionSort from '../../algorithms/insertion-sort';
+import mergeSort from '../../algorithms/merge-sort';
+import quickSort from '../../algorithms/quick-sort';
 import generateRandomizedArray from '../../helpers/randomizeArray';
 import SortingBar from '../SortingBar/SortingBar';
 import HomeHeader from '../../components/HomeHeader/HomeHeader';
 import '../../index.css';
-
 
 const Home = () => {
   const arraySize = 50;
@@ -18,7 +21,22 @@ const Home = () => {
   const [visualizationSpeed, setVisualizationSpeed] = useState(30);
   const [maxItem, setMaxItem] = useState(Math.max(...randomizedArray));
   const [currentAlgorithm, setCurrentAlgorithm] = useState('Bubble Sort');
-  const algorithms = ['Bubble Sort'];
+
+  const algorithms = [
+    'Bubble Sort',
+    'Selection Sort',
+    'Insertion Sort',
+    'Merge Sort',
+    'Quick Sort'
+  ];
+
+  const algoMap = {
+    'Bubble Sort': bubbleSort,
+    'Selection Sort': selectionSort,
+    'Insertion Sort': insertionSort,
+    'Merge Sort': mergeSort,
+    'Quick Sort': quickSort
+  };
 
   const onRandomize = () => {
     if (isVisualizing) return;
@@ -27,6 +45,7 @@ const Home = () => {
     });
     setRandomizedArray(nextRandomizedArray);
     setMaxItem(Math.max(...nextRandomizedArray));
+    setColorsArray(new Array(nextRandomizedArray.length).fill(0));
   };
 
   const onInputSizeChanged = (val) => {
@@ -45,12 +64,18 @@ const Home = () => {
   const onVisualize = async () => {
     if (isVisualizing) return;
 
+    const sortFunction = algoMap[currentAlgorithm];
+    if (!sortFunction) {
+      console.error("Algorithm not found:", currentAlgorithm);
+      return;
+    }
+
     setIsVisualizing(true);
-    await bubbleSort({
+    await sortFunction({
       array: randomizedArray,
       setArray: setRandomizedArray,
-      visualizationSpeed: visualizationSpeed,
       setColorsArray: setColorsArray,
+      visualizationSpeed: visualizationSpeed,
     });
     setIsVisualizing(false);
   };
@@ -98,7 +123,7 @@ const Home = () => {
                   width: '100%',
                   margin: 'auto 10% 0 10%',
                 }}
-              ></SortingBar>
+              />
             </div>
           );
         })}
